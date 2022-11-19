@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="Trajectory_Planner" name="ros_node" type="ros_node" output="screen"/>
+  		<rosparam file="$(find Trajectory_Planner)/msgs/config.yaml"/>
+</launch>
