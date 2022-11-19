@@ -2,6 +2,10 @@
     "python.autoComplete.extraPaths": [
         "/opt/ros/melodic/lib/python2.7/dist-packages"
     ],
+    "C_Cpp.default.browse.path": ["${/home/yue/Planner_myself/src/Trajectory_Planner/include}/**"],
+ 
+    "C_Cpp.default.includePath": ["${/home/yue/Planner_myself/src/Trajectory_Planner/include}/**"],
+
     "files.associations": {
         "array": "cpp",
         "hash_map": "cpp",
@@ -10,6 +14,7 @@
         "initializer_list": "cpp",
         "string_view": "cpp",
         "utility": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -2,27 +2,25 @@
 // #define ROS_NODE.H
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-//  #include "minimum_snap.h"
+ #include "trajectory_generator.h"
+
+class  TrajectoryGeneratorTool;
 class planner
 {
     private:
-        int  dot_num ;      //保存约束点个数
+        int  dot_num ;      //保存约束点个数       
         Eigen::MatrixXd route;          //矩阵保存约束点
-        Eigen::VectorXd time ;                             //向量保存轨迹时间       
-
-        // MinimumSnap mini_snap;       //初始化一个MinimumSnap类
-
-
+        Eigen::VectorXd time ;               //向量保存轨迹时间
+        Eigen::MatrixXd poly_coeff;     //   求系数矩阵
 
     public:
         planner()                               //构造函数；
         {
-            planner::getparam();
-
+            planner::getparam();            
         }     
-        
+        friend class TrajectoryGeneratorTool;   //  友元类
         void getparam(void);    //获取参数
-        void getpath(void);   //获取路径
+        Eigen::MatrixXd getcoeff( void);
 };
 
 // #endif

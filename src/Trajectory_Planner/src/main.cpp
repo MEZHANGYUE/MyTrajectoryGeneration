@@ -6,7 +6,9 @@
 int main(int argc , char ** argv)
 {
     ros::init(argc,argv,"ros_node");   //ROS初始化
-    planner node;
+    planner planner;
+    
+    planner.getcoeff();
     //node.getparam();
     // std::thread thrd_1(&planner::getparam, &node);
     // std::thread thrd_2(&planner::getpath, &node);
