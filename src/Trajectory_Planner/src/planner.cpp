@@ -1,7 +1,5 @@
 #include <ros/ros.h>
 #include "planner.h"
-#include <geometry_msgs/Pose.h>
-#include <nav_msgs/Path.h>
 #include "trajectory_generator.h"
 /*
 *获取配置文件参数
@@ -42,14 +40,14 @@ void planner::getparam(void)
 */
 Eigen::MatrixXd planner::getcoeff(void)
 {
-    Eigen::MatrixXd poly_coeff;
+    Eigen::MatrixXd polycoeff;
     Eigen::MatrixXd vel = Eigen::MatrixXd::Zero(2, 3);
     Eigen::MatrixXd acc = Eigen::MatrixXd::Zero(2, 3);
     TrajectoryGeneratorTool TrajectoryGeneratorTool;
     getparam();
-    poly_coeff = TrajectoryGeneratorTool.SolveQPClosedForm(mode, route, vel, acc, time);
+    polycoeff = TrajectoryGeneratorTool.SolveQPClosedForm(mode, route, vel, acc, time);
     // std::cout << "poly_coeff:" << std::endl << poly_coeff << std::endl;
-    return poly_coeff; 
+    return polycoeff; 
 }
 
 
@@ -62,7 +60,7 @@ Eigen::MatrixXd planner::getcoeff(void)
  */
 Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t) 
 {
-    Eigen::MatrixXd polycoeff = getcoeff();    //获取参数矩阵     //直接使用获取参数矩阵函数获取，不采用形参
+    // Eigen::MatrixXd polycoeff = getcoeff();    //获取参数矩阵     //直接使用获取参数矩阵函数获取，不采用形参
     Eigen::Vector3d ret;
     poly_coeff_num= 2 * mode;
     // std::cout << "poly_coeff_num:" << poly_coeff_num << std::endl;             //正确
@@ -70,12 +68,12 @@ Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t)
     for (int dim = 0; dim < 3; dim++) 
     {
         //把参数矩阵打印出来  为空？   //直接使用获取参数矩阵函数获取，不采用形参
-        // std::cout << "polycoeff:" << polycoeff << std::endl;  
+        //  std::cout << "polyCoeff:" << polyCoeff << std::endl;  
 
         Eigen::VectorXd coeff;
         coeff.resize(poly_coeff_num);
         
-        coeff = (polycoeff.row(k)).segment(dim * poly_coeff_num, poly_coeff_num);
+        coeff = (polyCoeff.row(k)).segment(dim * poly_coeff_num, poly_coeff_num);
         Eigen::VectorXd times = Eigen::VectorXd::Zero(poly_coeff_num);
         for (int j = 0; j < poly_coeff_num; j++)
             if (j == 0)
@@ -94,7 +92,7 @@ Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t)
     return ret;
 }
 
-void planner::trajectory_path(void)
+nav_msgs::Path planner::trajectory_path(void)
 {
     nav_msgs::Path trajectory;
     geometry_msgs::PoseStamped pt;
@@ -103,11 +101,12 @@ void planner::trajectory_path(void)
     trajectory.header.stamp = ros::Time();
     pt.header.frame_id="/map";
     pt.header.stamp = ros::Time();
-     cout << "ok1" << endl;
+
+    ros::Duration gen_time = ros::Duration();
     for (int i = 0; i < time.size(); i++) 
     {
         cout << "time:" << time(i) << endl;
-        for (double t = 0.0; t < time(i); t += 0.1) 
+        for (double t = 0.0; t < time(i); t += 0.01) 
         {
             pos = getPosPoly(poly_coeff, i, t);
             pt.pose.position.x = pos(0);
@@ -117,6 +116,6 @@ void planner::trajectory_path(void)
         }
     }
     cout << "trajectory:" << trajectory << endl;
-
+    return trajectory;              //  返回产生的 path 信息
 }
 
