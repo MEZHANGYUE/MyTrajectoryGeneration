@@ -151,7 +151,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-add_executable(ros_node   src/main.cpp   src/planner.cpp src/trajectory_generator.cpp)
+add_executable(ros_node   src/main.cpp   src/planner.cpp src/trajectory_generator.cpp )
 
 target_link_libraries(ros_node   ${catkin_LIBRARIES} )
 #############

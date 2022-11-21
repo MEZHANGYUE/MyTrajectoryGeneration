@@ -6,14 +6,11 @@
 */
 void planner::getparam(void)
 {
-    ros::NodeHandle n ;
     dot_num = 0;
-
     XmlRpc::XmlRpcValue param_list;    //严格限定数据类型
     XmlRpc::XmlRpcValue time_list;
     n.getParam("pose", param_list);   //提取约束点参数
     n.getParam("ts", time_list);    //提取时间参数
-
     dot_num = param_list.size() / 3;
     route.resize (dot_num, 3  );                           //不resize 会报错
     for (int i = 0 ; i < param_list.size() ; i++ )
@@ -29,10 +26,7 @@ void planner::getparam(void)
     {
         XmlRpc::XmlRpcValue value = time_list[i];
         time( i ) = double(value);
-        // ROS_INFO("time: %.2f",time( i ));
     }
-    // std::cout << "times:"<< std::endl<< time << std::endl;
-    
 }
 
 /*
@@ -88,7 +82,7 @@ Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t)
         ret(dim) = temp_pose;
     }
 
-    std::cout << "pose:" << ret << std::endl;       //直接使用获取参数矩阵函数获取，不采用形参，获取位置成功
+    // std::cout << "pose:" << ret << std::endl;       //直接使用获取参数矩阵函数获取，不采用形参，获取位置成功
     return ret;
 }
 
@@ -98,14 +92,13 @@ nav_msgs::Path planner::trajectory_path(void)
     geometry_msgs::PoseStamped pt;
     Vector3d pos;             //用于获取getPosPoly返回的向量，转化为pose信息
     trajectory.header.frame_id = "/map";
-    trajectory.header.stamp = ros::Time();
+    trajectory.header.stamp = ros::Time::now();
     pt.header.frame_id="/map";
-    pt.header.stamp = ros::Time();
+    pt.header.stamp = ros::Time::now();
 
-    ros::Duration gen_time = ros::Duration();
     for (int i = 0; i < time.size(); i++) 
     {
-        cout << "time:" << time(i) << endl;
+        // cout << "time:" << time(i) << endl;
         for (double t = 0.0; t < time(i); t += 0.01) 
         {
             pos = getPosPoly(poly_coeff, i, t);
@@ -115,7 +108,24 @@ nav_msgs::Path planner::trajectory_path(void)
             trajectory.poses.push_back(pt);
         }
     }
-    cout << "trajectory:" << trajectory << endl;
+    // cout << "trajectory:" << trajectory << endl;
     return trajectory;              //  返回产生的 path 信息
 }
+
+/*
+*轨迹发布
+*/
+void planner::tra_publish(void)
+{
+    ros::Publisher tra_generation_pub = n.advertise<nav_msgs::Path>("/tra_generation", 10); 
+
+    nav_msgs::Path tra;
+    tra = trajectory_path();   // 获取轨迹path
+
+    cout << "tra:" << tra << "tra:" << endl;
+    ros::Rate rate(1);  //设置发布频率
+    rate.sleep();
+    tra_generation_pub.publish(tra);   // 发布轨迹path
+}
+
 

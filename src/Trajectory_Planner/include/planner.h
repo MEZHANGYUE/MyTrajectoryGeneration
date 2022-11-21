@@ -1,5 +1,7 @@
 // #ifndef ROS_NODE.H
 // #define ROS_NODE.H
+
+#include <ros/ros.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <geometry_msgs/Pose.h>
@@ -15,6 +17,7 @@ class  TrajectoryGeneratorTool;
 class planner
 {
     private:
+        ros::NodeHandle n ;
         int  dot_num ;      //保存约束点个数       
         Eigen::MatrixXd route;          //矩阵保存约束点
         Eigen::VectorXd time ;               //向量保存轨迹时间
@@ -27,6 +30,7 @@ class planner
             poly_coeff = planner::getcoeff();   
             // planner::getPosPoly(poly_coeff , 2 , 0.05);
             planner::trajectory_path();
+            planner::tra_publish();
         }     
         
         // friend class TrajectoryGeneratorTool;   //  友元类
@@ -34,6 +38,7 @@ class planner
         Eigen::MatrixXd getcoeff( void);
         Eigen::Vector3d getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t) ;
         nav_msgs::Path trajectory_path(void);
+        void tra_publish(void);
 };
 
 // #endif
