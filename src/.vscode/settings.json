@@ -67,6 +67,7 @@
         "set": "cpp",
         "string": "cpp",
         "thread": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "geometry": "cpp"
     }
 }

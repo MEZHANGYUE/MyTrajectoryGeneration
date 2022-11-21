@@ -122,10 +122,18 @@ void planner::tra_publish(void)
     nav_msgs::Path tra;
     tra = trajectory_path();   // 获取轨迹path
 
-    cout << "tra:" << tra << "tra:" << endl;
+    // cout << "tra:" << tra << "tra:" << endl;
+    // ros::Rate rate(1);  //设置发布频率
+    // rate.sleep();
+    // tra_generation_pub.publish(tra);   // 发布轨迹path
+    
     ros::Rate rate(1);  //设置发布频率
-    rate.sleep();
-    tra_generation_pub.publish(tra);   // 发布轨迹path
+    while (1) 
+    {
+        tra_generation_pub.publish(tra);
+        rate.sleep();
+        ros::spinOnce();
+    }
 }
 
 
