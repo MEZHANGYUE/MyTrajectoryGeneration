@@ -54,15 +54,12 @@ Eigen::MatrixXd planner::getcoeff(void)
  */
 Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t) 
 {
-    // Eigen::MatrixXd polycoeff = getcoeff();    //获取参数矩阵     //直接使用获取参数矩阵函数获取，不采用形参
-    Eigen::Vector3d ret;
+    Eigen::Vector3d pt;
     poly_coeff_num= 2 * mode;
     // std::cout << "poly_coeff_num:" << poly_coeff_num << std::endl;             //正确
 
     for (int dim = 0; dim < 3; dim++) 
     {
-        //把参数矩阵打印出来  为空？   //直接使用获取参数矩阵函数获取，不采用形参
-        //  std::cout << "polyCoeff:" << polyCoeff << std::endl;  
 
         Eigen::VectorXd coeff;
         coeff.resize(poly_coeff_num);
@@ -79,11 +76,11 @@ Eigen::Vector3d planner::getPosPoly(Eigen::MatrixXd polyCoeff, int k, double t)
         {
             temp_pose = temp_pose + coeff(i) * times(times.rows() - i - 1);
         }
-        ret(dim) = temp_pose;
+        pt(dim) = temp_pose;
     }
 
-    // std::cout << "pose:" << ret << std::endl;       //直接使用获取参数矩阵函数获取，不采用形参，获取位置成功
-    return ret;
+    // std::cout << "pose:" << pt << std::endl;       //获取位置成功
+    return pt;
 }
 
 nav_msgs::Path planner::trajectory_path(void)

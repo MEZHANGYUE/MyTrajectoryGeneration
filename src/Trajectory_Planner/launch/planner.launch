@@ -4,6 +4,6 @@
   <node pkg="Trajectory_Planner" name="ros_node" type="ros_node" output="screen"/>
   
   		<rosparam file="$(find Trajectory_Planner)/msgs/config.yaml"/>
-  <node name="rviz" pkg="rviz" type="rviz" output="screen"/>
+  <!-- <node name="rviz" pkg="rviz" type="rviz" output="screen"/> -->
   <node pkg="Trajectory_Planner" name="offb_node" type="offb_node" output="screen"/>
 </launch>

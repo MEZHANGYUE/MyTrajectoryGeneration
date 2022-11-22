@@ -13,9 +13,10 @@ class control
         ros::NodeHandle nh;
         ros::ServiceClient arming_client;     //解锁服务
         ros::ServiceClient set_mode_client;    //模式设置   offboard
-        ros::Publisher local_pos_pub;
-        nav_msgs::Path tra;
+        ros::Publisher local_pos_pub;  ///发布无人机位置控制
+        
         ros::Subscriber state_sub;
+        ros::Subscriber pose_sub;
         ros::Subscriber path_sub;      // 订阅生成的优化轨迹
         ros::Publisher realpath_pub;   // 发布实际生成的轨迹
     public:

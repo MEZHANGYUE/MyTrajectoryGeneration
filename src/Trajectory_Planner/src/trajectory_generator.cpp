@@ -19,7 +19,7 @@ int TrajectoryGeneratorTool::Factorial(int x) {
     return fac;
 }
 
-/*!
+/*
  * 通过闭式求解QP，得到每段拟合轨迹的多项式系数
  * @param order 导数阶数。例如最小化jerk，则需要求解三次导数，则 d_order=3
  * @param Path 航迹点的空间坐标(3D)
