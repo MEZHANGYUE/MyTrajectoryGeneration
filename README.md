@@ -2,5 +2,5 @@
 ### trajectory_generation
 
 <p align="center">
-  <img src="files/3.gif" width = "400" height = "225"/>
+  <img src="github.com/MEZHANGYUE/MyTrajectoryGeneration/blob/main/file/3.gif" width = "840" height = "480"/>
 </p>
