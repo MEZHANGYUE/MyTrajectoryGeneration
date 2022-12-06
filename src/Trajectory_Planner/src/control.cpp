@@ -124,7 +124,7 @@ void control::px4_follow(void)
  */
 void control::px4_control(void)
 {
-    kp = -2;
+    kp = -2.5;
     px4_init();
     planpath_sub();
     while(1)

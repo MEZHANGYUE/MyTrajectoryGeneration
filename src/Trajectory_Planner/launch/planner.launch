@@ -6,4 +6,5 @@
   		<rosparam file="$(find Trajectory_Planner)/msgs/config.yaml"/>
   <!-- <node name="rviz" pkg="rviz" type="rviz" output="screen"/> -->
   <node pkg="Trajectory_Planner" name="offb_node" type="offb_node" output="screen"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find Trajectory_Planner)/launch/planner.rviz" required="true"/>
 </launch>
